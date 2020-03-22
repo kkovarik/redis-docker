@@ -1,0 +1,25 @@
+version: "2"
+services:
+  php:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app
+      - ../journey:/app/data
+    environment:
+      WEB_DOCUMENT_INDEX: index.htm
+      WEB_DOCUMENT_ROOT: /app
+  redis:
+    image: redis:3.2.10
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    command: redis-server
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - "8081:8081"

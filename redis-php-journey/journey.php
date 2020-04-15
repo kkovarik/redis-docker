@@ -11,18 +11,22 @@ $start_time = microtime(true);
 define("PREFIX_PLACEHOLDER", "__PREFIX__");
 define("SESSION_PLACEHOLDER", "__SESSION_ID__");
 
+$redis_host = getenv("REDIS_HOST");
+$redis_port = getenv("REDIS_PORT");
+echo "REDIS START <br> Connect to ".$redis_host.":".$redis_port."<br />";
 // configuration
-$file = "./data/login.log";
+$file = getenv("JOURNEY_FILE");
 $client = new Predis\Client([
     'scheme' => 'tcp',
-    'host'   => 'redis',
-    'port'   => 6379,
+    'host'   => $redis_host,
+    'port'   => $redis_port,
+    'persistent'=> 1,
 ]);
 
 // connect time in seconds 
 $connect_time = microtime(true); 
 
-echo "REDIS START <br>";
+echo "Processing ".$file;
 
 $prefix = generateRandomString(10);
 $sessionId = generateRandomString(40);

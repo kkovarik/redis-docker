@@ -1,0 +1,19 @@
+version: "2"
+services:
+  java:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - /Users/karelkovarik/Work/redis/redis-docker/journey/short.log:/var/journey/data.log
+    environment:
+      JAVA_OPTS: "-Xmx512m -Xms256m"
+      SPRING_REDIS_HOST: "redis"
+      SPRING_REDIS_PORT: "6379"
+  redis:
+    image: redis:5-alpine
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+    command: redis-server

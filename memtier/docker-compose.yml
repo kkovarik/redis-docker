@@ -1,0 +1,5 @@
+version: "2"
+services:
+  memtier:
+    image: redislabs/memtier_benchmark:1.2.17
+    entrypoint: ["tail", "-f", "/dev/null"]

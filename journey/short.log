@@ -1,0 +1,3 @@
+"EXISTS" "__PREFIX__:session:__SESSION_ID__"
+"GET" "__PREFIX__:session:__SESSION_ID__"
+"SETEX" "__PREFIX__:session:__SESSION_ID__" "1440" ""

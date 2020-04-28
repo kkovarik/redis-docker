@@ -1,0 +1,59 @@
+version: '2'
+services:
+  redis1:
+    image: redis:3.2-alpine
+    ports:
+      - "16379:6379"
+    volumes:
+      - ./master.conf:/tmp/master.conf
+      - /Volumes/Obelix/projects/redis/data:/tmp/mass_import
+    command: [sh, -c, "cp /tmp/master.conf /etc/master.conf && redis-server /etc/master.conf"] 
+
+  sentinel1:
+    image: redis:3.2-alpine
+    expose:
+      - 26379
+    volumes:
+      - ./sentinel1.conf:/tmp/sentinel.conf
+    command: [sh, -c, "cp /tmp/sentinel.conf /etc/sentinel.conf && redis-server /etc/sentinel.conf --sentinel"] 
+
+  redis2:
+    image: redis:3.2-alpine
+    ports:
+      - "26379:6379"
+    volumes:
+      - ./slave.conf:/tmp/slave.conf
+      - /Volumes/Obelix/projects/redis/data:/tmp/mass_import      
+    command: [sh, -c, "cp /tmp/slave.conf /etc/slave.conf && redis-server /etc/slave.conf"] 
+
+  sentinel2:
+    image: redis:3.2-alpine
+    expose:
+      - 26379
+    volumes:
+      - ./sentinel2.conf:/tmp/sentinel.conf
+    command: [sh, -c, "cp /tmp/sentinel.conf /etc/sentinel.conf && redis-server /etc/sentinel.conf --sentinel"] 
+
+  redis3:
+    image: redis:3.2-alpine
+    ports:
+      - "36379:6379"
+    volumes:
+      - ./slave.conf:/tmp/slave.conf
+    command: [sh, -c, "cp /tmp/slave.conf /etc/slave.conf && redis-server /etc/slave.conf"] 
+
+  sentinel3:
+    image: redis:3.2-alpine
+    expose:
+      - 26379
+    volumes:
+      - ./sentinel3.conf:/tmp/sentinel.conf
+    command: [sh, -c, "cp /tmp/sentinel.conf /etc/sentinel.conf && redis-server /etc/sentinel.conf --sentinel"] 
+
+  tester:
+    image: redis:3.2-alpine
+    command: ["tail", "-f", "/dev/null"]
+
+  memtier:
+    image: redislabs/memtier_benchmark:1.2.17
+    entrypoint: ["tail", "-f", "/dev/null"]
